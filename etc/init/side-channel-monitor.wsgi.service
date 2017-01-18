@@ -1,0 +1,16 @@
+[Unit]
+Description=uWSGI side-channel-monitor
+#After=syslog.target
+
+[Service]
+ExecStart=/usr/bin/uwsgi --chdir /var/www/wsgi/flask/side-channel-monitor --wsgi-file /var/www/wsgi/flask/side-channel-monitor/side-channel.py --callable app --processes 4 --threads 2 --uid nobody --gid nogroup --http 0.0.0.0:7071 --logto /var/log/side-channel-monitor.log
+# Requires systemd version 211 or newer
+RuntimeDirectory=uwsgi
+Restart=always
+KillSignal=SIGQUIT
+Type=notify
+StandardError=syslog
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target
